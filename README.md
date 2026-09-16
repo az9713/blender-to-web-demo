@@ -18,7 +18,7 @@ Blender Python converted the visual direction and mathematical specification int
 
 ### 3. Final Interactive Website
 
-Three.js loads the exported GLB and gives each band an independent pointer-responsive spring motion.
+Three.js loads the exported GLB, gives each band an independent pointer-responsive spring motion, and lets users drag the complete sculpture through arbitrary 3D orientations.
 
 ![Final Three-Band Energy Sculpture website](evidence/screenshots/browser-energy-sculpture-final-warm-silver.png)
 
@@ -38,7 +38,7 @@ The workflow was inspired by this [YouTube demonstration](https://www.youtube.co
 1. A concept image establishes the visual target.
 2. `scripts/create_asset.py` uses Blender's `bpy` and `mathutils` APIs to generate three closed bands and a luminous core.
 3. Blender saves the editable `.blend`, exports a browser-ready `.glb`, and renders verification images.
-4. `public/src/main.js` loads the GLB with Three.js `GLTFLoader`, assigns each band to its own runtime pivot, and applies pointer, scroll, pulse, pause, reset, and wireframe interactions.
+4. `public/src/main.js` loads the GLB with Three.js `GLTFLoader`, assigns each band to its own runtime pivot, and applies independent pointer springs, free trackball rotation, scroll, pulse, pause, reset, and wireframe interactions.
 5. GitHub Actions deploys the complete static repository to GitHub Pages.
 
 ## Tech Stack

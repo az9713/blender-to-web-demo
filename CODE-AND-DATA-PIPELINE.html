@@ -215,7 +215,7 @@
             <tr><td>Export</td><td>Selected asset collection → <code>energy-sculpture.glb</code></td><td>Blender glTF exporter</td><td>Serializes geometry, named nodes, transforms, and supported PBR properties.</td></tr>
             <tr><td>Transport</td><td>GLB file → bytes in browser memory</td><td>Local HTTP server + browser networking</td><td>Moves data only; no geometry inference occurs.</td></tr>
             <tr><td>Loading</td><td>GLB bytes → <code>Object3D</code>, <code>Mesh</code>, geometry, materials</td><td>Three.js <code>GLTFLoader</code></td><td>Reconstructs the serialized scene hierarchy as JavaScript objects.</td></tr>
-            <tr><td>Interaction</td><td>Pointer, scroll, click, time → transforms</td><td>Project JavaScript</td><td>Updates three independent pivots, spring state, core offset, separation, and pulse.</td></tr>
+            <tr><td>Interaction</td><td>Pointer hover/drag, scroll, click, time → transforms</td><td>Project JavaScript</td><td>Updates three independent spring pivots plus a freely rotated assembly quaternion, core offset, separation, and pulse.</td></tr>
             <tr><td>Drawing</td><td>Scene + camera + lights → GPU commands</td><td>Three.js <code>WebGLRenderer</code></td><td>Builds shaders, uploads buffers, and submits draw work.</td></tr>
             <tr><td>Pixels</td><td>GPU work → canvas image</td><td>WebGL implementation + GPU</td><td>Transforms vertices, shades fragments, and rasterizes each frame.</td></tr>
           </tbody>
@@ -301,7 +301,7 @@ bpy.ops.export_scene.gltf(
 
     <section id="threejs">
       <h2>Three.js browser code</h2>
-      <p>The web layer does not recreate the bands. It loads Blender's GLB, locates the named nodes, attaches independent pivots, and changes those pivots in response to browser input.</p>
+      <p>The web layer does not recreate the bands. It loads Blender's GLB, locates the named nodes, attaches independent pivots, and changes those pivots in response to browser input. A virtual trackball separately rotates their shared assembly root, allowing unrestricted 3D viewing without replacing the per-band motion.</p>
 
       <div class="split">
         <div>
@@ -378,7 +378,7 @@ bpy.ops.export_scene.gltf(
         <li><a href="./scripts/create_asset.py">scripts/create_asset.py</a><span>Deterministic Blender mesh construction, preview rendering, validation reporting, save, and export.</span></li>
         <li><a href="./assets/energy-sculpture.blend">assets/energy-sculpture.blend</a><span>Editable Blender scene.</span></li>
         <li><a href="./public/models/energy-sculpture.glb">public/models/energy-sculpture.glb</a><span>Binary glTF asset consumed by the browser.</span></li>
-        <li><a href="./public/src/main.js">public/src/main.js</a><span>Three.js scene, loader integration, named pivots, inputs, pulse, lighting, diagnostics, and animation loop.</span></li>
+        <li><a href="./public/src/main.js">public/src/main.js</a><span>Three.js scene, loader integration, named pivots, virtual trackball, inputs, pulse, lighting, diagnostics, and animation loop.</span></li>
         <li><a href="./public/src/interaction.js">public/src/interaction.js</a><span>Response matrices, spring dynamics, scroll offsets, quaternion conversion, and pulse timing.</span></li>
         <li><a href="./public/index.html">public/index.html</a><span>Interactive canvas, controls, status, fallback, and import map.</span></li>
         <li><a href="./server.cjs">server.cjs</a><span>Minimal loopback-only static server.</span></li>

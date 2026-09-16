@@ -43,6 +43,13 @@ body {
   display: block;
 }
 
+#scene {
+  cursor: grab;
+  touch-action: none;
+}
+
+#scene.is-dragging { cursor: grabbing; }
+
 .fallback-image {
   object-fit: contain;
   opacity: 0;

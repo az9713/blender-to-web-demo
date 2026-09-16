@@ -59,6 +59,10 @@ const rayHit = new THREE.Vector3();
 const coreTarget = new THREE.Vector3();
 const coreOffset = new THREE.Vector3();
 const q = new THREE.Quaternion();
+const dragStart = new THREE.Vector3();
+const dragCurrent = new THREE.Vector3();
+const dragStartQuaternion = new THREE.Quaternion();
+const dragDeltaQuaternion = new THREE.Quaternion();
 
 const state = {
   mx: 0,
@@ -73,6 +77,12 @@ const state = {
   last: performance.now(),
   loaded: false,
   scroll: 0,
+  dragging: false,
+  dragPointerId: null,
+  dragStartX: 0,
+  dragStartY: 0,
+  dragMoved: false,
+  suppressClick: false,
   frameTimes: []
 };
 
@@ -181,6 +191,57 @@ function updatePointer(event) {
   pointerNdc.set(state.mx, state.my);
 }
 
+function projectToTrackball(event, out) {
+  const rect = canvas.getBoundingClientRect();
+  const scale = Math.max(1, Math.min(rect.width, rect.height));
+  const x = 2 * (event.clientX - rect.left - rect.width / 2) / scale;
+  const y = 2 * (rect.top + rect.height / 2 - event.clientY) / scale;
+  const radiusSquared = x * x + y * y;
+  if (radiusSquared <= 1) {
+    out.set(x, y, Math.sqrt(1 - radiusSquared));
+  } else {
+    const inverseLength = 1 / Math.sqrt(radiusSquared);
+    out.set(x * inverseLength, y * inverseLength, 0);
+  }
+  return out.applyQuaternion(camera.quaternion);
+}
+
+function beginDrag(event) {
+  if (!event.isPrimary || event.button !== 0 || !state.loaded) return;
+  updatePointer(event);
+  state.dragging = true;
+  state.dragPointerId = event.pointerId;
+  state.dragStartX = event.clientX;
+  state.dragStartY = event.clientY;
+  state.dragMoved = false;
+  state.suppressClick = false;
+  projectToTrackball(event, dragStart);
+  dragStartQuaternion.copy(assembly.quaternion);
+  canvas.setPointerCapture(event.pointerId);
+  canvas.classList.add('is-dragging');
+}
+
+function movePointer(event) {
+  updatePointer(event);
+  if (!state.dragging || event.pointerId !== state.dragPointerId) return;
+  if (Math.hypot(event.clientX - state.dragStartX, event.clientY - state.dragStartY) > 3) {
+    state.dragMoved = true;
+  }
+  projectToTrackball(event, dragCurrent);
+  dragDeltaQuaternion.setFromUnitVectors(dragStart, dragCurrent);
+  assembly.quaternion.copy(dragDeltaQuaternion).multiply(dragStartQuaternion).normalize();
+}
+
+function endDrag(event) {
+  if (!state.dragging || event.pointerId !== state.dragPointerId) return;
+  state.suppressClick = state.dragMoved;
+  state.dragging = false;
+  state.dragPointerId = null;
+  canvas.classList.remove('is-dragging');
+  if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+  updateDiagnostics();
+}
+
 function updateCoreTarget() {
   if (!state.hasPointer || !bands.CoreSphere) {
     coreTarget.set(0, 0, 0);
@@ -265,6 +326,8 @@ function updateDiagnostics() {
   const text = {
     pointer: [Number(state.mx.toFixed(3)), Number(state.my.toFixed(3))],
     scroll: Number(state.scroll.toFixed(3)),
+    assemblyQuaternion: assembly.quaternion.toArray().map((v) => Number(v.toFixed(4))),
+    dragging: state.dragging,
     rotations,
     paused: state.paused,
     wireframe: state.wireframe,
@@ -306,15 +369,30 @@ function reset() {
   state.hasPointer = false;
   coreOffset.set(0, 0, 0);
   coreTarget.set(0, 0, 0);
+  assembly.quaternion.identity();
+  state.dragging = false;
+  state.dragPointerId = null;
+  state.dragMoved = false;
+  state.suppressClick = false;
+  canvas.classList.remove('is-dragging');
   for (const spring of Object.values(springs)) spring.reset();
   applyTransforms();
   updateDiagnostics();
 }
 
-canvas.addEventListener('pointermove', updatePointer);
+canvas.addEventListener('pointerdown', beginDrag);
+canvas.addEventListener('pointermove', movePointer);
+canvas.addEventListener('pointerup', endDrag);
+canvas.addEventListener('pointercancel', endDrag);
 canvas.addEventListener('pointerenter', updatePointer);
-canvas.addEventListener('pointerleave', () => { state.hasPointer = false; });
-canvas.addEventListener('click', () => { state.clickTime = state.time; });
+canvas.addEventListener('pointerleave', () => { if (!state.dragging) state.hasPointer = false; });
+canvas.addEventListener('click', () => {
+  if (state.suppressClick) {
+    state.suppressClick = false;
+    return;
+  }
+  state.clickTime = state.time;
+});
 window.addEventListener('resize', resize);
 window.addEventListener('scroll', updateScroll, { passive: true });
 document.addEventListener('visibilitychange', () => { state.last = performance.now(); state.accumulator = 0; });
