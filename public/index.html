@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Three-Band Energy Sculpture</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="stage">
+    <section class="viewer" aria-label="Interactive Blender-to-web sculpture">
+      <canvas id="scene" aria-label="Three independently mouse-responsive mathematical bands"></canvas>
+      <img class="fallback-image" src="./images/fallback.png" alt="Static render of the three-band energy sculpture">
+      <div class="hud">
+        <div>
+          <p class="eyebrow">Blender → GLB → Three.js</p>
+          <h1>Three-Band Energy Sculpture</h1>
+        </div>
+          <p id="status" role="status">Starting...</p>
+      </div>
+      <div class="controls" aria-label="Demo controls">
+        <button id="pause" type="button" aria-pressed="false">Pause</button>
+        <button id="reset" type="button">Reset</button>
+        <button id="pulse" type="button">Pulse</button>
+        <button id="wire" type="button" aria-pressed="false">Wireframe</button>
+      </div>
+    </section>
+    <aside class="panel">
+      <h2>Live data transformation</h2>
+      <ol>
+        <li>Generated concept image saved as a reference.</li>
+        <li>Blender Python swept three closed superellipse straps from the corrected math.</li>
+        <li>Blender exported named parts as one GLB.</li>
+        <li>GLTFLoader created runtime meshes.</li>
+        <li>JavaScript puts each band under its own pivot and evolves fixed-step springs from pointer input.</li>
+      </ol>
+      <h2>Diagnostics</h2>
+      <pre id="diagnostics">{}</pre>
+    </aside>
+  </main>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

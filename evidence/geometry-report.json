@@ -1,0 +1,93 @@
+{
+  "blenderVersion": "5.2.1 LTS",
+  "coordinateConvention": "Canonical web Y-up geometry converted to Blender by (x,y,z)_web -> (x,-z,y)_Blender; glTF exporter export_yup=True.",
+  "parameters": "config\\sculpture-parameters.json",
+  "bandReports": [
+    {
+      "mesh": "OuterBand",
+      "vertices": 4608,
+      "faces": 4608,
+      "triangles_if_triangulated": 9216,
+      "frameCloseAngleRadians": 2.2682644322774517e-06,
+      "frameF1ClosureError": 0.0,
+      "frameF2ClosureError": 0.0,
+      "arcLength": 29.116737680118703,
+      "nonManifoldEdges": 0,
+      "minimumQuadArea": 0.00327143631875515,
+      "finiteVertices": true
+    },
+    {
+      "mesh": "MiddleBand",
+      "vertices": 4608,
+      "faces": 4608,
+      "triangles_if_triangulated": 9216,
+      "frameCloseAngleRadians": -0.008068705997740804,
+      "frameF1ClosureError": 6.155189738369847e-08,
+      "frameF2ClosureError": 5.972094665958535e-08,
+      "arcLength": 17.74986437107314,
+      "nonManifoldEdges": 0,
+      "minimumQuadArea": 0.0012569519458338618,
+      "finiteVertices": true
+    },
+    {
+      "mesh": "InnerBand",
+      "vertices": 4608,
+      "faces": 4608,
+      "triangles_if_triangulated": 9216,
+      "frameCloseAngleRadians": -7.088154987935364e-05,
+      "frameF1ClosureError": 3.725290298461914e-09,
+      "frameF2ClosureError": 3.7252898543726777e-09,
+      "arcLength": 9.6934014740361,
+      "nonManifoldEdges": 0,
+      "minimumQuadArea": 0.000364730745786801,
+      "finiteVertices": true
+    }
+  ],
+  "shellReport": [
+    {
+      "id": "Outer",
+      "restShell": [
+        3.830069809322512,
+        5.371933952072663
+      ],
+      "translationBound": 0.1286953767623375,
+      "movingShell": [
+        3.7013744325601747,
+        5.58120833811609
+      ]
+    },
+    {
+      "id": "Middle",
+      "restShell": [
+        2.1748943819087057,
+        3.32996695939781
+      ],
+      "translationBound": 0.12270391191808026,
+      "movingShell": [
+        2.0521904699906255,
+        3.502620375706857
+      ]
+    },
+    {
+      "id": "Inner",
+      "restShell": [
+        1.0532859541025255,
+        1.8512588623087982
+      ],
+      "translationBound": 0.10259142264341595,
+      "movingShell": [
+        0.9506945314591095,
+        1.981619167886846
+      ]
+    }
+  ],
+  "blendPath": "assets\\energy-sculpture.blend",
+  "glbPath": "public\\models\\energy-sculpture.glb",
+  "glbBytes": 830652,
+  "glbSha256": "4188ddbdf812b9efbf3d079c6616da0f286571a2378bb54ad42b8655a3e220d5",
+  "previewRenders": [
+    "evidence/screenshots/blender-three-quarter.png",
+    "evidence/screenshots/blender-front.png",
+    "evidence/screenshots/blender-side.png"
+  ]
+}

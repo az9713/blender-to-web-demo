@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Source-code map and data-conversion workflow for the Three-Band Energy Sculpture.">
+  <link rel="icon" href="data:,">
+  <title>Code and Data Pipeline — Three-Band Energy Sculpture</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef3f6;
+      --paper: #ffffff;
+      --ink: #122536;
+      --muted: #526675;
+      --line: #ced9df;
+      --navy: #063b63;
+      --cyan: #007f87;
+      --gold: #a66c16;
+      --code: #101a23;
+      --code-ink: #e8f1f5;
+      --wash: #e5f5f3;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    a { color: var(--cyan); text-underline-offset: 3px; }
+    a:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+    code, pre { font-family: "Cascadia Code", Consolas, monospace; }
+    code { font-size: .9em; }
+
+    header {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-inner, main, footer {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .header-inner { padding: 42px 0 28px; }
+    .eyebrow {
+      color: var(--cyan);
+      font-weight: 800;
+      font-size: .78rem;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 { line-height: 1.2; letter-spacing: 0; }
+    h1 { margin: 10px 0 14px; font-size: clamp(2rem, 5vw, 3.8rem); max-width: 920px; }
+    h2 { margin: 0 0 18px; font-size: clamp(1.55rem, 3vw, 2.2rem); }
+    h3 { margin: 28px 0 10px; font-size: 1.12rem; }
+    p { margin: 0 0 15px; }
+    .lead { max-width: 900px; color: var(--muted); font-size: 1.12rem; }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      margin-top: 24px;
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    main { padding: 34px 0 60px; }
+    section {
+      padding: 34px 0;
+      border-bottom: 1px solid var(--line);
+      scroll-margin-top: 12px;
+    }
+
+    .concept {
+      width: 100%;
+      max-height: 680px;
+      object-fit: contain;
+      display: block;
+      background: #dfe8ed;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+
+    figcaption { margin-top: 9px; color: var(--muted); font-size: .86rem; }
+    .callout {
+      margin: 20px 0;
+      padding: 17px 20px;
+      background: var(--wash);
+      border-left: 4px solid var(--cyan);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin: 22px 0;
+    }
+
+    .flow div { background: var(--paper); padding: 18px; min-height: 145px; }
+    .flow strong { display: block; color: var(--navy); margin-bottom: 7px; }
+    .flow span { color: var(--muted); font-size: .9rem; }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); background: var(--paper); }
+    table { width: 100%; border-collapse: collapse; min-width: 790px; text-align: left; }
+    th, td { padding: 13px 15px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: #e3ebef; font-size: .84rem; }
+    tr:last-child td { border-bottom: 0; }
+    td:first-child { font-weight: 750; color: var(--navy); }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+      gap: 28px;
+      align-items: start;
+      margin: 22px 0 34px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px;
+      overflow: auto;
+      background: var(--code);
+      color: var(--code-ink);
+      border-radius: 6px;
+      font-size: .8rem;
+      line-height: 1.55;
+      tab-size: 2;
+    }
+
+    .file-list { list-style: none; padding: 0; margin: 0; }
+    .file-list li { padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .file-list li:last-child { border-bottom: 0; }
+    .file-list a { font-weight: 750; }
+    .file-list span { display: block; color: var(--muted); margin-top: 3px; }
+    .hash { overflow-wrap: anywhere; color: var(--gold); }
+    footer { padding: 24px 0 42px; color: var(--muted); font-size: .84rem; }
+
+    @media (max-width: 860px) {
+      .flow { grid-template-columns: 1fr 1fr; }
+      .split { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .header-inner, main, footer { width: min(100% - 24px, 1120px); }
+      .header-inner { padding-top: 28px; }
+      .flow { grid-template-columns: 1fr; }
+      section { padding: 28px 0; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      nav { display: none; }
+      section { break-inside: avoid; }
+      pre { white-space: pre-wrap; color: #111; background: #f0f2f3; border: 1px solid #bbb; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="eyebrow">Source map · Data ownership · Reproducibility</div>
+      <h1>Code and Data Pipeline</h1>
+      <p class="lead">How a generated concept image informed deterministic Blender geometry, how Blender serialized the asset as GLB, and how Three.js turned that file into an independently responsive browser sculpture.</p>
+      <nav aria-label="Page sections">
+        <a href="#distinction">Key distinction</a>
+        <a href="#pipeline">Conversion pipeline</a>
+        <a href="#blender">Blender code</a>
+        <a href="#threejs">Three.js code</a>
+        <a href="#files">Source files</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="distinction">
+      <h2>The image was a reference, not mesh input</h2>
+      <figure>
+        <img class="concept" src="./astra-three-band-concept.png" alt="Generated concept showing three metallic energy bands around a luminous central sphere">
+        <figcaption>Original generated concept, copied into the project root as <code>astra-three-band-concept.png</code>.</figcaption>
+      </figure>
+      <div class="callout">
+        <strong>No pixel-to-mesh algorithm was used.</strong> The Blender generator never opens this PNG. Astra interpreted its silhouette, palette, strap readability, and lighting, then encoded a reproducible approximation in parameter JSON and Blender Python. The handoff equations govern topology, frame closure, spacing, and dynamics.
+      </div>
+      <p>The image-generation prompt remains in <a href="./references/image-generation-prompt.txt"><code>references/image-generation-prompt.txt</code></a>. The authority boundary is recorded in <a href="./references/concept-to-geometry.md"><code>references/concept-to-geometry.md</code></a>: appearance comes from the image; geometry correctness comes from mathematics.</p>
+      <p class="hash"><strong>Concept SHA-256:</strong> 3EBB88269167EFFC40138E5B5AC5DE72B895E06AE0E443B6722EF759C0A96207</p>
+    </section>
+
+    <section id="pipeline">
+      <h2>Who converts what</h2>
+      <div class="flow" aria-label="Data flow summary">
+        <div><strong>1 · Image generation</strong><span>Prompt and art direction become PNG pixels.</span></div>
+        <div><strong>2 · Astra interpretation</strong><span>Pixels plus equations become JSON parameters and Python source.</span></div>
+        <div><strong>3 · Blender</strong><span>Python and JSON become mesh data, materials, a scene, and a <code>.blend</code>.</span></div>
+        <div><strong>4 · glTF export</strong><span>Selected Blender objects become one binary <code>.glb</code>.</span></div>
+        <div><strong>5 · Browser</strong><span>GLB bytes become Three.js objects, GPU commands, and interactive canvas pixels.</span></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Stage</th><th>Input → output</th><th>Responsible component</th><th>What actually changes</th></tr></thead>
+          <tbody>
+            <tr><td>Concept</td><td>Text constraints → PNG</td><td>Image-generation tool</td><td>Produces a 2D appearance reference. It does not infer hidden geometry.</td></tr>
+            <tr><td>Interpretation</td><td>PNG + handoff equations → JSON + Python</td><td>Astra/Codex</td><td>Chooses radii, widths, twists, harmonics, materials, orientations, and construction logic.</td></tr>
+            <tr><td>Construction</td><td>JSON + Python → vertices, faces, materials, scene</td><td>Blender, <code>bpy</code>, <code>mathutils</code></td><td>Instantiates the first genuine 3D representation.</td></tr>
+            <tr><td>Authoring file</td><td>Blender scene → <code>energy-sculpture.blend</code></td><td>Blender</td><td>Saves editable meshes, materials, hierarchy, lights, and render setup.</td></tr>
+            <tr><td>Export</td><td>Selected asset collection → <code>energy-sculpture.glb</code></td><td>Blender glTF exporter</td><td>Serializes geometry, named nodes, transforms, and supported PBR properties.</td></tr>
+            <tr><td>Transport</td><td>GLB file → bytes in browser memory</td><td>Local HTTP server + browser networking</td><td>Moves data only; no geometry inference occurs.</td></tr>
+            <tr><td>Loading</td><td>GLB bytes → <code>Object3D</code>, <code>Mesh</code>, geometry, materials</td><td>Three.js <code>GLTFLoader</code></td><td>Reconstructs the serialized scene hierarchy as JavaScript objects.</td></tr>
+            <tr><td>Interaction</td><td>Pointer, scroll, click, time → transforms</td><td>Project JavaScript</td><td>Updates three independent pivots, spring state, core offset, separation, and pulse.</td></tr>
+            <tr><td>Drawing</td><td>Scene + camera + lights → GPU commands</td><td>Three.js <code>WebGLRenderer</code></td><td>Builds shaders, uploads buffers, and submits draw work.</td></tr>
+            <tr><td>Pixels</td><td>GPU work → canvas image</td><td>WebGL implementation + GPU</td><td>Transforms vertices, shades fragments, and rasterizes each frame.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="blender">
+      <h2>Astra-generated Blender construction code</h2>
+      <p>The complete generator is <a href="./scripts/create_asset.py"><code>scripts/create_asset.py</code></a>. Its only design input is <a href="./config/sculpture-parameters.json"><code>config/sculpture-parameters.json</code></a>; it does not read the PNG.</p>
+
+      <div class="split">
+        <div>
+          <h3>Harmonic centerline</h3>
+          <p><code>rho()</code> adds radial lobes. <code>centerline_base()</code> adds a non-planar wave. <code>orientation_matrix()</code> puts each band in a distinct assembly plane.</p>
+        </div>
+        <pre><code>def rho(band, u):
+    return band["R"] * (
+        1
+        + band["epsilon"] * cos(band["m"] * u + band["phi"])
+        + band["eta"] * sin(band["n"] * u + band["psi"])
+    )
+
+def centerline_base(band, u):
+    r = rho(band, u)
+    return Vector((
+        r * cos(u),
+        r * sin(u),
+        band["h"] * sin(band["k"] * u + band["gamma"])
+    ))</code></pre>
+      </div>
+
+      <div class="split">
+        <div>
+          <h3>Closed transport frame</h3>
+          <p><code>closed_transport_frame()</code> carries a local cross-section basis around the curve. It measures the final seam mismatch and distributes the correction by accumulated arc length.</p>
+        </div>
+        <pre><code>close = atan2(
+    t0.dot(raw[count].cross(raw[0])),
+    clamp(raw[count].dot(raw[0]), -1, 1)
+)
+
+for j in range(count + 1):
+    corr = close * lengths[j] / total
+    a = rotate_about(tangents[j], corr, raw[j])
+    b = tangents[j].cross(a).normalized()</code></pre>
+      </div>
+
+      <div class="split">
+        <div>
+          <h3>Cross-section sweep</h3>
+          <p><code>build_band_mesh()</code> applies full and harmonic twist, samples a rounded rectangular superellipse, and sweeps it through the corrected frame. Adjacent samples become quad faces.</p>
+        </div>
+        <pre><code>chi = (
+    band["fullTwists"] * u
+    + radians(band["tauDegrees"])
+    * sin(band["q"] * u + band["delta"])
+)
+d1 = cos(chi) * f1[j] + sin(chi) * f2[j]
+d2 = -sin(chi) * f1[j] + cos(chi) * f2[j]
+
+a, b = superellipse(band["W"], band["T"], band["p"], theta)
+vertex = web_to_blender(points[j] + a * d1 + b * d2)</code></pre>
+      </div>
+
+      <div class="split">
+        <div>
+          <h3>Save and export</h3>
+          <p>Blender saves the editable authoring scene, selects only <code>ExportAsset</code>, and exports a Y-up GLB without cameras or lights.</p>
+        </div>
+        <pre><code>bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
+
+bpy.ops.export_scene.gltf(
+    filepath=str(glb_path),
+    export_format="GLB",
+    use_selection=True,
+    export_yup=True,
+    export_lights=False,
+    export_cameras=False,
+)</code></pre>
+      </div>
+    </section>
+
+    <section id="threejs">
+      <h2>Three.js browser code</h2>
+      <p>The web layer does not recreate the bands. It loads Blender's GLB, locates the named nodes, attaches independent pivots, and changes those pivots in response to browser input.</p>
+
+      <div class="split">
+        <div>
+          <h3>GLB loading</h3>
+          <p><a href="./public/src/main.js"><code>public/src/main.js</code></a> uses the official loader. A failed load switches to the Blender-rendered fallback instead of leaving a blank canvas.</p>
+        </div>
+        <pre><code>new GLTFLoader().load(
+  './models/energy-sculpture.glb',
+  installGltf,
+  reportProgress,
+  () =&gt; document.body.classList.add('fallback')
+);</code></pre>
+      </div>
+
+      <div class="split">
+        <div>
+          <h3>Independent runtime pivots</h3>
+          <p><code>installGltf()</code> finds <code>OuterBand</code>, <code>MiddleBand</code>, and <code>InnerBand</code>. Each receives its own centered parent and spring state.</p>
+        </div>
+        <pre><code>for (const name of BAND_NAMES) {
+  const mesh = findRequired(exportRoot, name);
+  const pivot = new THREE.Group();
+  pivot.name = `${name.replace('Band', '')}Pivot`;
+  assembly.add(pivot);
+  pivot.add(mesh);
+  bands[name] = { mesh, pivot };
+  springs[name] = new BandSpring(name);
+}</code></pre>
+      </div>
+
+      <div class="split">
+        <div>
+          <h3>Pointer-to-rotation conversion</h3>
+          <p><a href="./public/src/interaction.js"><code>public/src/interaction.js</code></a> converts normalized pointer coordinates into different rotation-vector targets using one response matrix per band. The shared gain is <code>2.35</code>.</p>
+        </div>
+        <pre><code>export function pointerToTarget(mx, my, bandName) {
+  const sx = Math.tanh(1.2 * mx);
+  const sy = Math.tanh(1.2 * my);
+  const z = [sx, sy, sx * sy];
+  const m = A[bandName];
+
+  return new THREE.Vector3(
+    m[0][0] * z[0] + m[0][1] * z[1] + m[0][2] * z[2],
+    m[1][0] * z[0] + m[1][1] * z[1] + m[1][2] * z[2],
+    m[2][0] * z[0] + m[2][1] * z[1] + m[2][2] * z[2]
+  ).multiplyScalar(2.35);
+}</code></pre>
+      </div>
+
+      <div class="split">
+        <div>
+          <h3>Fixed-step spring state</h3>
+          <p>Each <code>BandSpring</code> integrates angular displacement and velocity. Different natural frequencies and damping ratios create visibly different inertia.</p>
+        </div>
+        <pre><code>step(dt) {
+  const { omega, zeta } = SPRINGS[this.name];
+  const accel = this.target.clone()
+    .sub(this.theta)
+    .multiplyScalar(omega * omega)
+    .addScaledVector(this.velocity, -2 * zeta * omega);
+
+  this.velocity.addScaledVector(accel, dt);
+  this.theta.addScaledVector(this.velocity, dt);
+}</code></pre>
+      </div>
+    </section>
+
+    <section id="files">
+      <h2>Source and artifact map</h2>
+      <ul class="file-list">
+        <li><a href="./astra-three-band-concept.png">astra-three-band-concept.png</a><span>Portable copy of the original generated concept image.</span></li>
+        <li><a href="./references/image-generation-prompt.txt">references/image-generation-prompt.txt</a><span>The exact art-direction prompt.</span></li>
+        <li><a href="./config/sculpture-parameters.json">config/sculpture-parameters.json</a><span>Geometry and authoring-material values.</span></li>
+        <li><a href="./scripts/create_asset.py">scripts/create_asset.py</a><span>Deterministic Blender mesh construction, preview rendering, validation reporting, save, and export.</span></li>
+        <li><a href="./assets/energy-sculpture.blend">assets/energy-sculpture.blend</a><span>Editable Blender scene.</span></li>
+        <li><a href="./public/models/energy-sculpture.glb">public/models/energy-sculpture.glb</a><span>Binary glTF asset consumed by the browser.</span></li>
+        <li><a href="./public/src/main.js">public/src/main.js</a><span>Three.js scene, loader integration, named pivots, inputs, pulse, lighting, diagnostics, and animation loop.</span></li>
+        <li><a href="./public/src/interaction.js">public/src/interaction.js</a><span>Response matrices, spring dynamics, scroll offsets, quaternion conversion, and pulse timing.</span></li>
+        <li><a href="./public/index.html">public/index.html</a><span>Interactive canvas, controls, status, fallback, and import map.</span></li>
+        <li><a href="./server.cjs">server.cjs</a><span>Minimal loopback-only static server.</span></li>
+        <li><a href="./evidence/geometry-report.json">evidence/geometry-report.json</a><span>Mesh counts, closure errors, shell bounds, GLB size, and checksum.</span></li>
+        <li><a href="./evidence/browser-report.md">evidence/browser-report.md</a><span>Observed browser behavior and independent-pivot diagnostics.</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    Three-Band Energy Sculpture · Standalone source map · No external network resources required
+  </footer>
+</body>
+</html>

@@ -1,0 +1,10 @@
+Use case: stylized-concept
+Asset type: concept reference for a Blender-to-Three.js technical demo
+Primary request: Create a single clear 3D concept image for a technical Blender-to-web demonstration.
+Subject: Exactly three separate nested closed metallic bands surround one luminous sphere.
+Style/medium: polished 3D concept render, readable and engineering-friendly rather than fantasy.
+Composition/framing: three-quarter view, full object visible, centered, enough spacing to see three independent moving parts.
+Lighting/mood: readable studio lighting, light or mid-tone neutral background, no dark obscuring shadows.
+Materials/textures: wide thin straps with rounded rectangular cross-sections, not round wires. Outer band dark titanium blue with no full twist. Middle band warm silver with one full twist. Inner band graphite with restrained cyan accent and one opposite-direction full twist. Core softly luminous cyan/white.
+Geometry notes: Each loop has subtle harmonic radial lobes and gentle out-of-plane waves. Use different planes and radial spacing. No impossible intersections.
+Constraints: no text, no interface, no extra rings, no welded connections, no ornate environment, no watermark. This is an appearance reference only; prioritize understandable structure over visual spectacle.

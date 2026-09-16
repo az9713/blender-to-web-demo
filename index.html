@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Three-Band Energy Sculpture project index and Blender-to-web documentation.">
+  <title>Three-Band Energy Sculpture</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #142638; background: #eef3f8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { width: min(1080px, calc(100% - 32px)); margin: 0 auto; padding: 48px 0 64px; }
+    header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 440px); gap: 40px; align-items: center; }
+    h1 { margin: 8px 0 16px; max-width: 12ch; font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: .92; letter-spacing: 0; }
+    .eyebrow { margin: 0; color: #007d83; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+    .lede { max-width: 54ch; color: #53677a; font-size: 1.1rem; line-height: 1.65; }
+    img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid #b8c8d7; border-radius: 6px; background: #dce7ef; }
+    nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+    a { color: inherit; }
+    .page { display: block; min-height: 168px; padding: 22px; border: 1px solid #b8c8d7; border-radius: 6px; background: #fff; text-decoration: none; }
+    .page:hover, .page:focus-visible { border-color: #007d83; outline: 3px solid rgba(0, 125, 131, .15); outline-offset: 2px; }
+    .page strong { display: block; margin-bottom: 10px; font-size: 1.15rem; }
+    .page span { color: #607487; line-height: 1.5; }
+    .launch { color: #fff; background: #007d83; border-color: #007d83; }
+    .launch span { color: #d9ffff; }
+    footer { margin-top: 40px; color: #607487; font-size: .92rem; }
+    @media (max-width: 760px) { main { padding-top: 28px; } header, nav { grid-template-columns: 1fr; } h1 { max-width: 10ch; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <section>
+        <p class="eyebrow">Blender → GLB → Three.js</p>
+        <h1>Three-Band Energy Sculpture</h1>
+        <p class="lede">Explore the interactive 3D sculpture, then inspect the exact code, data transformations, and project handoff that produced it.</p>
+      </section>
+      <img src="evidence/screenshots/blender-side.png" alt="Side view of the three-band sculpture inside Blender">
+    </header>
+    <nav aria-label="Project pages">
+      <a class="page launch" href="public/"><strong>Launch sculpture</strong><span>Move, scroll, click, pause, reset, and inspect the GLB in real time.</span></a>
+      <a class="page" href="CODE-AND-DATA-PIPELINE.html"><strong>Code and data pipeline</strong><span>Follow the conversion from image to Blender geometry to GLB to browser runtime.</span></a>
+      <a class="page" href="docs/blender-to-web-project-handoff.html"><strong>Project handoff</strong><span>Read the architecture, ownership boundaries, acceptance gates, and reproducible workflow.</span></a>
+    </nav>
+    <footer>Original procedural sculpture and web implementation. Third-party licenses remain with their respective projects.</footer>
+  </main>
+</body>
+</html>
