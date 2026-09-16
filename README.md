@@ -2,7 +2,7 @@
 
 An end-to-end Blender-to-web experiment: a generated concept image is translated into deterministic Blender geometry, exported as GLB, and animated in a browser with Three.js.
 
-![Blender side view](evidence/screenshots/blender-side.png)
+![Three-Band Energy Sculpture open in Blender](evidence/screenshots/blender_3d_asset.png)
 
 ## Live Pages
 
