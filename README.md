@@ -2,7 +2,25 @@
 
 An end-to-end Blender-to-web experiment: a generated concept image is translated into deterministic Blender geometry, exported as GLB, and animated in a browser with Three.js.
 
+## Visual Transformation
+
+### 1. Original Astra Concept
+
+The generated reference image established the sculpture's nested-band composition, metallic palette, and luminous core.
+
+![Original three-band concept created with Astra](astra-three-band-concept.png)
+
+### 2. Blender 3D Asset
+
+Blender Python converted the visual direction and mathematical specification into editable, separately named 3D geometry.
+
 ![Three-Band Energy Sculpture open in Blender](evidence/screenshots/blender_3d_asset.png)
+
+### 3. Final Interactive Website
+
+Three.js loads the exported GLB and gives each band an independent pointer-responsive spring motion.
+
+![Final Three-Band Energy Sculpture website](evidence/screenshots/browser-energy-sculpture-final-warm-silver.png)
 
 ## Live Pages
 
