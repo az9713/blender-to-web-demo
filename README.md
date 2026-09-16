@@ -20,7 +20,7 @@ Blender Python converted the visual direction and mathematical specification int
 
 Three.js loads the exported GLB, gives each band an independent pointer-responsive spring motion, and lets users drag the complete sculpture through arbitrary 3D orientations.
 
-![Final Three-Band Energy Sculpture website](evidence/screenshots/browser-energy-sculpture-final-warm-silver.png)
+[![Final Three-Band Energy Sculpture website](evidence/screenshots/browser-energy-sculpture-final-warm-silver.png)](https://az9713.github.io/blender-to-web-demo/public/)
 
 ## Live Pages
 
