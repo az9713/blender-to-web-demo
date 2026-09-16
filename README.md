@@ -4,10 +4,6 @@ An end-to-end Blender-to-web experiment: a generated concept image is translated
 
 ![Three-Band Energy Sculpture open in Blender](evidence/screenshots/blender_3d_asset.png)
 
-## About
-
-The Three-Band Energy Sculpture demonstrates a complete, reproducible path from visual concept to interactive 3D experience. Blender Python constructs three independently named bands from harmonic centerlines, closed transported frames, twisted superellipse cross-sections, and parameterized materials. Blender then exports the authored geometry as GLB, while Three.js loads the asset in the browser and applies independent damped-spring motion driven by pointer, scroll, and click input. The reference image guides appearance; mathematics and source code determine the actual geometry and behavior.
-
 ## Live Pages
 
 - [Project index](https://az9713.github.io/blender-to-web-demo/)
